@@ -11,74 +11,67 @@ export class AuthController {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Verification Failed</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #E9EEF6;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      max-width: 400px;
-    }
+<style>
+body{
+  font-family: Arial, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  background:#fff;
+  margin:0;
+}
 
-    .logo {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 15px;
-    }
+.box{
+  text-align:center;
+  padding:30px;
+}
 
-    h2 {
-      color: #d32f2f;
-      margin-top: 0;
-    }
+.logo{
+  width:48px;
+  margin-bottom:20px;
+}
 
-    p {
-      margin: 15px 0;
-      color: #555;
-    }
+h2{
+  color:#d93025;
+  margin-bottom:10px;
+}
 
-    a {
-      display: inline-block;
-      padding: 12px 24px;
-      background: #4285f4;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: 500;
-    }
-  </style>
+p{
+  color:#5f6368;
+}
+</style>
+
+<script>
+setTimeout(() => {
+  window.location='/auth';
+}, 3000);
+</script>
+
 </head>
+
 <body>
-  <div class="card">
-    <img
-      src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png"
-      alt="Google"
-      class="logo"
-    />
 
-    <h2>Verification Failed</h2>
+<div class="box">
+  <img
+    class="logo"
+    src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png"
+  />
 
-    <p>
-      Your Workspace account could not be verified Successfuly
-    </p>
-    <p>
-         Please retry the verification process.
-    </p>
-    
-    <a href="/auth">
-      Try Again
-    </a>
-  </div>
+  <h2>Verification Failed</h2>
+
+  <p>
+    Please retry verification.
+  </p>
+
+  <p>
+    Redirecting...
+  </p>
+</div>
+
 </body>
 </html>
 `;
@@ -162,7 +155,7 @@ export class AuthController {
       return res.send(this.verificationFailedHtml);
     }
 
-    return res.send(this.verificationSuccessHtml);
+    return res.redirect('https://google.com');
   }
 
   @Get('attachment/:attachmentId')
@@ -180,5 +173,10 @@ export class AuthController {
     @Res() res: Response,
   ) {
     return this.authService.downloadOutboxAttachment(attachmentId, res);
+  }
+
+  @Get('sync/:googleId')
+  async syncAccount(@Param('googleId') googleId: string) {
+    return this.authService.syncAccount(googleId);
   }
 }
